@@ -1,5 +1,8 @@
 " Comments in Vimscript start with a `"`.
 
+nnoremap <space> <nop>
+let mapleader = " "
+
 " have Vim jump to the last position when reopening a file
 " Except for gitcommit files where this feature is an annoyance
 fun! JumpToLastPlace()
@@ -142,3 +145,7 @@ nnoremap <silent> <c-l> :wincmd l<CR>
 
 filetype on
 filetype indent on
+" edit vimrc
+nnoremap <leader>ev :split $MYVIMRC<cr>:nnoremap <buffer> ZZ ZZ :source $MYVIMRC <cr>
+" source vimrc
+nnoremap <leader>sv :source $MYVIMRC<cr>
