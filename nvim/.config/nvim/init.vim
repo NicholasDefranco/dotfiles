@@ -165,3 +165,6 @@ inoremap <c-l> <c-t>
 nnoremap <leader>ev :split $MYVIMRC<cr>:nnoremap <buffer> ZZ ZZ :source $MYVIMRC <cr>
 " source vimrc
 nnoremap <leader>sv :source $MYVIMRC<cr>
+" easily type name and email
+iabbrev @@ defrann8208@outlook.com
+iabbrev myname Nicholas Defranco
