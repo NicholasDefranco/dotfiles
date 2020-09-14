@@ -145,6 +145,22 @@ nnoremap <silent> <c-l> :wincmd l<CR>
 
 filetype on
 filetype indent on
+
+" Flip case of a word
+inoremap <c-u> <esc>bviwUea
+
+" ^ and g_ are inconvenient to type
+nnoremap H ^
+nnoremap L g_
+
+" _ and + to move lines up and down
+nnoremap _ "+ddp
+nnoremap + "+ddkP
+
+" Indent with Ctrl + H and Ctrl + L
+inoremap <c-h> <c-d>
+inoremap <c-l> <c-t>
+
 " edit vimrc
 nnoremap <leader>ev :split $MYVIMRC<cr>:nnoremap <buffer> ZZ ZZ :source $MYVIMRC <cr>
 " source vimrc
