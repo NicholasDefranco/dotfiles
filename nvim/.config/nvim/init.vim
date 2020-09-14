@@ -17,6 +17,8 @@ autocmd BufReadPost * call JumpToLastPlace()
 " files for any web dev should be two spaces
 autocmd FileType yaml,markdown,javascript,css,html setlocal shiftwidth=2 softtabstop=2 expandtab
 
+autocmd FileType sh,zsh,bash,fish setlocal shiftwidth=4 softtabstop=4 expandtab
+
 " vim-plug as the plugin manager https://github.com/junegunn/vim-plug
 
 " Install vim-plug if not installed already...
