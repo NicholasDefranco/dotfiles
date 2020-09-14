@@ -20,6 +20,10 @@ fun! JumpToLastPlace()
 endfun
 autocmd BufReadPost * call JumpToLastPlace()
 
+" Search down into subfolders
+" Provides tab-completion for all file-related tasks
+set path+=**
+
 " files for any web dev should be two spaces
 autocmd FileType yaml,markdown,javascript,css,html setlocal shiftwidth=2 softtabstop=2 expandtab
 
