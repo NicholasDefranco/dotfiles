@@ -17,6 +17,8 @@ autocmd BufReadPost * call JumpToLastPlace()
 " files for any web dev should be two spaces
 autocmd FileType yaml,markdown,javascript,css,html setlocal shiftwidth=2 softtabstop=2 expandtab
 
+autocmd FileType sh,zsh,bash,fish setlocal shiftwidth=4 softtabstop=4 expandtab
+
 " vim-plug as the plugin manager https://github.com/junegunn/vim-plug
 
 " Install vim-plug if not installed already...
@@ -81,8 +83,13 @@ syntax on
 " Disable the default Vim startup message.
 set shortmess+=I
 
+set formatoptions+=2tqancrojpw
+
 " Show line numbers.
 set number
+
+" width of numbers
+set numberwidth=3
 
 " This enables relative line numbering mode. With both number and
 " relativenumber enabled, the current line shows the true line number, while
