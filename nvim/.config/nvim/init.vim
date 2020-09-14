@@ -1,5 +1,8 @@
 " Comments in Vimscript start with a `"`.
 
+nnoremap <space> <nop>
+let mapleader = " "
+
 " have Vim jump to the last position when reopening a file
 " Except for gitcommit files where this feature is an annoyance
 fun! JumpToLastPlace()
@@ -147,21 +150,37 @@ nnoremap <silent> <c-j> :wincmd j<CR>
 nnoremap <silent> <c-h> :wincmd h<CR>
 nnoremap <silent> <c-l> :wincmd l<CR>
 
-" Try to prevent bad habits like using the arrow keys for movement. This is
-" not the only possible bad habit. For example, holding down the h/j/k/l keys
-" for movement, rather than using more efficient movement commands, is also a
-" bad habit. The former is enforceable through a .vimrc, while we don't know
-" how to prevent the latter.
-" Do this in normal mode...
-nnoremap <Left>  :echoe "Use h"<CR>
-nnoremap <Right> :echoe "Use l"<CR>
-nnoremap <Up>    :echoe "Use k"<CR>
-nnoremap <Down>  :echoe "Use j"<CR>
-" ...and in insert mode
-inoremap <Left>  <ESC>:echoe "Use h"<CR>
-inoremap <Right> <ESC>:echoe "Use l"<CR>
-inoremap <Up>    <ESC>:echoe "Use k"<CR>
-inoremap <Down>  <ESC>:echoe "Use j"<CR>
-
 filetype on
 filetype indent on
+
+" Create the tags file
+command! MakeTags !ctags -R .
+
+" Flip case of a word
+inoremap <c-u> <esc>bviwUea
+
+" ^ and g_ are inconvenient to type
+nnoremap H ^
+nnoremap L g_
+
+" _ and + to move lines up and down
+nnoremap _ "+ddp
+nnoremap + "+ddkP
+
+" Indent with Ctrl + H and Ctrl + L
+inoremap <c-h> <c-d>
+inoremap <c-l> <c-t>
+
+" Resize windows more convieniently
+nnoremap <Right> <c-w>>
+nnoremap <Left> <c-w><
+nnoremap <Up> <c-w>+
+nnoremap <Down> <c-w>-
+
+" edit vimrc
+nnoremap <leader>ev :split $MYVIMRC<cr>:nnoremap <buffer> ZZ ZZ :source $MYVIMRC <cr>
+" source vimrc
+nnoremap <leader>sv :source $MYVIMRC<cr>
+" easily type name and email
+iabbrev @@ defrann8208@outlook.com
+iabbrev myname Nicholas Defranco
