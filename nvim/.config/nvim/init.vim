@@ -146,6 +146,9 @@ nnoremap <silent> <c-l> :wincmd l<CR>
 filetype on
 filetype indent on
 
+" Create the tags file
+command! MakeTags !ctags -R .
+
 " Flip case of a word
 inoremap <c-u> <esc>bviwUea
 
