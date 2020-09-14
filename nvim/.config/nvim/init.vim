@@ -81,8 +81,13 @@ syntax on
 " Disable the default Vim startup message.
 set shortmess+=I
 
+set formatoptions+=2tqancrojpw
+
 " Show line numbers.
 set number
+
+" width of numbers
+set numberwidth=3
 
 " This enables relative line numbering mode. With both number and
 " relativenumber enabled, the current line shows the true line number, while
