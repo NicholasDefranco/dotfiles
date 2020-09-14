@@ -161,6 +161,12 @@ nnoremap + "+ddkP
 inoremap <c-h> <c-d>
 inoremap <c-l> <c-t>
 
+" Resize windows more convieniently
+nnoremap <Right> <c-w>>
+nnoremap <Left> <c-w><
+nnoremap <Up> <c-w>+
+nnoremap <Down> <c-w>-
+
 " edit vimrc
 nnoremap <leader>ev :split $MYVIMRC<cr>:nnoremap <buffer> ZZ ZZ :source $MYVIMRC <cr>
 " source vimrc
