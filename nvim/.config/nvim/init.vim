@@ -25,7 +25,11 @@ autocmd BufReadPost * call JumpToLastPlace()
 set path+=**
 
 " files for any web dev should be two spaces
-autocmd FileType yaml,markdown,javascript,css,html setlocal shiftwidth=2 softtabstop=2 expandtab
+autocmd FileType json,yaml,markdown,javascript,css,html setlocal shiftwidth=2 softtabstop=2 expandtab
+
+" shell scripts should be four spaces
+autocmd FileType vim,sh,zsh,bash,fish setlocal shiftwidth=4 softtabstop=4
+
 
 " shell scripts should be four spaces
 autocmd FileType vim,sh,zsh,bash,fish setlocal shiftwidth=4 softtabstop=4
