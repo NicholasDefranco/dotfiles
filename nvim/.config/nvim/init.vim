@@ -40,6 +40,7 @@ call plug#begin(system('echo -n "${XDG_CONFIG_HOME:-$HOME/.config}/nvim/plugged"
 " https://github.com/vim-airline/vim-airline
 " pretty status bar
 Plug 'vim-airline/vim-airline'
+
 " https://github.com/danro/rename.vim
 " Adds the :Rename comand allowing me to rename files
 Plug 'danro/rename.vim'
@@ -47,9 +48,28 @@ Plug 'danro/rename.vim'
 " https://github.com/suan/vim-instant-markdown
 " Opens a local web server on port 8090 which parses markdown files
 " Viewable on the browser
+" requires: instant-markdown-d
+" sudo npm -g install instant-markdown-d
 Plug 'suan/vim-instant-markdown', {'for': 'markdown'}
 
+" simple commenting plugin
+" https://github.com/tpope/vim-commentary
+Plug 'tpope/vim-commentary'
+
+" Manipulate surrounding characters with ease
+" https://github.com/tpope/vim-surround
+Plug 'tpope/vim-surround'
+
+" . command for plugins
+" https://github.com/tpope/vim-repeat
+Plug 'tpope/vim-repeat'
+
 call plug#end()
+
+" vim-airline
+
+" let the fancy-ness continue in the status bar
+let g:airline#extensions#tabline#enabled = 1
 
 " vim-instant-markdown
 
