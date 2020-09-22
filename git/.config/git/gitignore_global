@@ -1,5 +1,7 @@
 *~
 .*.swp
 .vimrc
+*.vim
 .DS_Store
 tags
+cppcheck.xml
