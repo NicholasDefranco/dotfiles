@@ -240,6 +240,11 @@ filetype indent on
 " Indent a whole file
 nnoremap <leader>i gg=G<c-o>
 
+" Enable CSS completion
+" https://medium.com/vim-drops/css-autocompletion-on-vim-no-plugins-needed-e8df9ce079c7
+filetype plugin on
+set omnifunc=syntaxcomplete#Complete
+
 " Create the tags file
 command! MakeTags !ctags -R .
 
