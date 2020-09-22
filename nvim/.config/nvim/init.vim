@@ -1,5 +1,8 @@
 " Comments in Vimscript start with a `"`.
 
+" Colourful colorscheme
+colorscheme slate
+
 nnoremap <space> <nop>
 let mapleader = " "
 
