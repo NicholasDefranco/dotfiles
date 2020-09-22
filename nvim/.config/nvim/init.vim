@@ -155,6 +155,8 @@ inoremap <c-u> <esc>bviwUea
 " ^ and g_ are inconvenient to type
 nnoremap H ^
 nnoremap L g_
+vnoremap H ^
+vnoremap L g_
 
 " _ and + to move lines up and down
 nnoremap _ "+ddp
