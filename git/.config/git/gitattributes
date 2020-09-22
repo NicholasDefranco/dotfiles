@@ -1,0 +1,5 @@
+*.docx diff=word
+*.pdf diff=pdf
+*.jpg diff=exif
+*.png diff=exif
+*.JPG diff=exif

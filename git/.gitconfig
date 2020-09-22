@@ -4,6 +4,7 @@
 [core]
 	editor = vim
 	excludesfile = /home/nick/.config/git/gitignore_global
+	attributesfile = git/.config/git/gitattributes
 [commit]
 	gpgSign = true
 	verbose = true
@@ -12,3 +13,14 @@
 	discard = restore
 [pager]
 	branch = false
+[diff "word"]
+	# pip3 install docx2txt
+	# https://github.com/ankushshah89/python-docx2txt
+	textconv = docx2txt
+[diff "pdf"]
+	# pip3 install pdfminer.six
+	# https://github.com/pdfminer/pdfminer.six
+	textconv = pdf2txt.py
+[diff "exif"]
+	# sudo apt install exif
+	textconv = exif
