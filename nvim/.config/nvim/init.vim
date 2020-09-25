@@ -47,7 +47,19 @@ fun! StripSpace()
 endfun
 autocmd BufEnter * call StripSpace()
 
-autocmd FileType sh,zsh,bash,fish setlocal shiftwidth=4 softtabstop=4 expandtab
+" Using the Built-in spell checker
+" This function blacklists files that I don't want spell checking on
+fun! SpellCheck()
+	let l:ext = expand("%:e")
+	" I programmed in these languages at one point ... don't judge!
+	" Spell check in them is very annoying
+	if l:ext =~ '.*rpgle$' || l:ext =~ 'clle' || l:ext =~ '.*pf$' || l:ext =~ 'lf' || &ft == 'help' || &ft == 'man' || &ft == 'gitrebase'
+		return
+	else
+		setlocal spell spelllang=en_ca
+	endif
+endfun
+autocmd VimEnter,BufReadPost * call SpellCheck()
 
 " vim-plug as the plug-in manager https://github.com/junegunn/vim-plug
 
