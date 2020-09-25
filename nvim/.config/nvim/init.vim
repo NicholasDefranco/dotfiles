@@ -141,6 +141,9 @@ augroup mdformat
     autocmd Filetype markdown iabbrev <buffer> $ <br>
 augroup END
 
+" Other Markdown stuff
+exec "source ~/.config/nvim/markdown-vim.vim"
+
 " If you open this file in Vim, it'll be syntax highlighted for you.
 
 " Vim is based on Vi. Setting `nocompatible` switches from the default
