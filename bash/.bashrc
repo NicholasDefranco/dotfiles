@@ -128,3 +128,6 @@ fi
 
 # bind Ctrl-o to custom lfcd function
 bind '"\C-o":"lfcd\C-m"'
+
+# added by travis gem
+[ ! -s /home/nick/.travis/travis.sh ] || source /home/nick/.travis/travis.sh
