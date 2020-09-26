@@ -23,9 +23,31 @@ autocmd BufReadPost * call JumpToLastPlace()
 " files for any web dev should be two spaces
 autocmd FileType yaml,markdown,javascript,css,html setlocal shiftwidth=2 softtabstop=2 expandtab
 
+
+" Properly strip unneeded whitespace
+fun! StripSpace()
+    if expand('%') !~ "\.md$"
+	augroup stripgroup
+	    autocmd!
+	    autocmd BufWrite * silent! :undojoin | :let l = winsaveview()
+	    autocmd BufWrite * silent! :undojoin|silent! :%s/\s\+$//
+	    autocmd BufWrite * silent! :undojoin|:call winrestview(l)
+	augroup END
+    else
+	augroup stripgroup
+	    autocmd!
+	    autocmd BufWrite *.md silent! :undojoin | :let l = winsaveview()
+	    autocmd BufWrite *.md silent! :undojoin|silent! :%s/\s\s\s\+$//|:undojoin|silent! :%s/\(\S\)\s$/\1/
+	    autocmd BufWrite *.md silent! :undojoin|:call winrestview(l)
+	augroup END
+    endif
+endfun
+autocmd BufEnter * call StripSpace()
+
 autocmd FileType sh,zsh,bash,fish setlocal shiftwidth=4 softtabstop=4 expandtab
 
 " vim-plug as the plugin manager https://github.com/junegunn/vim-plug
+" vim-plug as the plug-in manager https://github.com/junegunn/vim-plug
 
 " Install vim-plug if not installed already...
 " Taken from Luke Smith's config
