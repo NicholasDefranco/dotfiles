@@ -9,32 +9,56 @@ let mapleader = " "
 " have Vim jump to the last position when reopening a file
 " Except for gitcommit files where this feature is an annoyance
 fun! JumpToLastPlace()
-	" If filename is .git/COMMIT_EDITMSG
-	" https://stackoverflow.com/questions/4525261/getting-relative-paths-in-vim#24463362
-	if expand("%") =~ '.git/COMMIT_EDITMSG'
-		return
-	endif
-	if line("'\"") > 1 && line("'\"") <= line("$")
-		exe "normal! g'\""
-	endif
+    " If filename is .git/COMMIT_EDITMSG
+    " https://stackoverflow.com/questions/4525261/getting-relative-paths-in-vim#24463362
+    if expand("%") =~ '.git/COMMIT_EDITMSG'
+	return
+    endif
+    if line("'\"") > 1 && line("'\"") <= line("$")
+	exe "normal! g'\""
+    endif
 endfun
 autocmd BufReadPost * call JumpToLastPlace()
 
 " files for any web dev should be two spaces
 autocmd FileType yaml,markdown,javascript,css,html setlocal shiftwidth=2 softtabstop=2 expandtab
 
+" shell scripts should be four spaces
+autocmd FileType vim,sh,zsh,bash,fish setlocal shiftwidth=4 softtabstop=4
+
+" Properly strip unneeded whitespace
+fun! StripSpace()
+    if &ft == ''
+	return
+    endif
+    if expand('%') !~ "\.md$"
+	augroup stripgroup
+	    autocmd!
+	    autocmd BufWrite * silent! :undojoin | :let l = winsaveview()
+	    autocmd BufWrite * silent! :undojoin|silent! :%s/\s\+$//
+	    autocmd BufWrite * silent! :undojoin|:call winrestview(l)
+	augroup END
+    else
+	augroup stripgroup
+	    autocmd!
+	    autocmd BufWrite *.md silent! :undojoin|silent! :%s/\s\s\s\+$//|:undojoin|silent! :%s/\(\S\)\s$/\1/
+	augroup END
+    endif
+endfun
+autocmd BufEnter * call StripSpace()
+
 autocmd FileType sh,zsh,bash,fish setlocal shiftwidth=4 softtabstop=4 expandtab
 
-" vim-plug as the plugin manager https://github.com/junegunn/vim-plug
+" vim-plug as the plug-in manager https://github.com/junegunn/vim-plug
 
 " Install vim-plug if not installed already...
 " Taken from Luke Smith's config
 " https://github.com/LukeSmithxyz/voidrice/blob/master/.config/nvim/init.vim
 if ! filereadable(system('echo -n "${XDG_CONFIG_HOME:-$HOME/.config}/nvim/autoload/plug.vim"'))
-	echo "Downloading junegunn/vim-plug to manage plugins..."
-	silent !mkdir -p ${XDG_CONFIG_HOME:-$HOME/.config}/nvim/autoload/
-	silent !curl "https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim" > ${XDG_CONFIG_HOME:-$HOME/.config}/nvim/autoload/plug.vim
-	autocmd VimEnter * PlugInstall
+    echo "Downloading junegunn/vim-plug to manage plugins..."
+    silent !mkdir -p ${XDG_CONFIG_HOME:-$HOME/.config}/nvim/autoload/
+    silent !curl "https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim" > ${XDG_CONFIG_HOME:-$HOME/.config}/nvim/autoload/plug.vim
+    autocmd VimEnter * PlugInstall
 endif
 
 " List of plugins
@@ -91,6 +115,19 @@ let g:instant_markdown_autostart = 0
 
 " Autoscrolling confuses me, as the screen will appear to random places
 let g:instant_markdown_autoscroll = 0
+
+" Helper to assist inserting breaks in markdown
+" The a option to format options has strange behaviour with breaks in markdown
+" This code should help rectify the issue
+augroup mdformat
+    autocmd!
+    autocmd BufEnter,BufReadPost,BufWritePre,VimLeavePre *.md silent! :undojoin | :let l = winsaveview()
+    autocmd BufEnter,BufWritePost *.md silent! undojoin | silent! :keepjumps %s/  $/ <br>/g
+    autocmd BufWritePre,VimLeavePre *.md silent! undojoin | silent! :keepjumps %s/ <br>$/  /g
+    autocmd BufWritePre *.md silent! undojoin | silent! :keepjumps %s/<br> \?\(.\+\)/\1/g
+    autocmd BufEnter,BufReadPost,BufWritePost,VimLeavePre *.md call winrestview(l)
+    autocmd Filetype markdown iabbrev <buffer> $ <br>
+augroup END
 
 " If you open this file in Vim, it'll be syntax highlighted for you.
 
