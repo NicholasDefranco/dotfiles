@@ -96,8 +96,10 @@ let g:instant_markdown_autoscroll = 0
 " The a option to format options has strange behaviour with breaks in markdown
 " This code should help rectify the issue
 augroup mdformat
+	autocmd BufEnter,BufReadPost,BufWritePre *.md silent! undojoin
 	autocmd BufEnter,BufWritePost *.md silent! %s/  $/ <br>/g
 	autocmd BufWritePre,VimLeavePre *.md silent! %s/ <br>$/  /g
+	autocmd BufWritePre *.md silent! %s/<br> \?\(.\+\)/\1/g
 	autocmd Filetype markdown iabbrev <buffer> $ <br>
 augroup END
 
