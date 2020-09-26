@@ -92,6 +92,15 @@ let g:instant_markdown_autostart = 0
 " Autoscrolling confuses me, as the screen will appear to random places
 let g:instant_markdown_autoscroll = 0
 
+" Helper to assist inserting breaks in markdown
+" The a option to format options has strange behaviour with breaks in markdown
+" This code should help rectify the issue
+augroup mdformat
+	autocmd BufEnter,BufWritePost *.md silent! %s/  $/ <br>/g
+	autocmd BufWritePre,VimLeavePre *.md silent! %s/ <br>$/  /g
+	autocmd Filetype markdown iabbrev <buffer> $ <br>
+augroup END
+
 " If you open this file in Vim, it'll be syntax highlighted for you.
 
 " Vim is based on Vi. Setting `nocompatible` switches from the default
