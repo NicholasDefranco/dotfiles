@@ -161,8 +161,14 @@ syntax on
 " Disable the default Vim startup message.
 set shortmess+=I
 
+" fancy auto format options that are extremely helpful
+set formatoptions+=2tqancrojpw
+
 " Show line numbers.
 set number
+
+" width of numbers
+set numberwidth=3
 
 " This enables relative line numbering mode. With both number and
 " relativenumber enabled, the current line shows the true line number, while
@@ -223,6 +229,9 @@ nnoremap <silent> <c-l> :wincmd l<CR>
 filetype on
 filetype indent on
 
+" Indent a whole file
+nnoremap <leader>i gg=G<c-o>
+
 " Create the tags file
 command! MakeTags !ctags -R .
 
@@ -250,3 +259,23 @@ nnoremap <leader>sv :source $MYVIMRC<cr>
 " easily type name and email
 iabbrev @@ defrann8208@outlook.com
 iabbrev myname Nicholas Defranco
+
+" Get Project Specific .vimrc in the root directory of the git repository
+fun! GitProject()
+    " https://stackoverflow.com/questions/5794611/how-to-expand-a-symbolic-link-to-the-full-path-of-a-filename-in-vim#5794800
+    let l:projectvimrc = system('cd ' . fnamemodify(resolve(expand("%")), ':p:h') . ' && git rev-parse --show-toplevel | tr -d "\n"') . '/.vimrc'
+
+    " v:shell_error is vim's equivalent of $? in shell scripts
+    " https://stackoverflow.com/questions/9828148/how-to-get-return-status-value-of-an-external-command-in-vim#9828589
+    if v:shell_error == 0
+	" Edit project specific vimrc
+	" I can't figure out how to map this binding to open the file
+	" stored in l:projectvimrc:
+	nnoremap <buffer> <leader>ep :split
+
+	" https://stackoverflow.com/questions/840900/vim-sourcing-based-on-a-string#841025
+	silent! execute "source " . l:projectvimrc
+    endif
+endfun
+autocmd BufNew * call GitProject()
+call GitProject()
