@@ -59,9 +59,10 @@ autocmd BufEnter * call StripSpace()
 " This function blacklists files that I don't want spell checking on
 fun! SpellCheck()
 	let l:ext = expand("%:e")
+	let l:fname = expand('%:t')
 	" I programmed in these languages at one point ... don't judge!
 	" Spell check in them is very annoying
-	if l:ext =~ '.*rpgle$' || l:ext =~ 'clle' || l:ext =~ '.*pf$' || l:ext =~ 'lf' || &ft == 'help' || &ft == 'man' || &ft == 'gitrebase'
+	if l:ext =~ '.*rpgle$' || l:ext =~ 'clle' || l:ext =~ '.*pf$' || l:ext =~ 'lf' || &ft == 'help' || &ft == 'man' || &ft == 'gitrebase' || l:fname == '.gitconfig' || l:fname == 'git-rebase-todo' || l:fname == '.gitattributes' || &ft == '' || l:fname == 'addp-hunk-edit.diff'
 		return
 	else
 		setlocal spell spelllang=en_ca
