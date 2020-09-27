@@ -8,6 +8,8 @@
 [commit]
 	gpgSign = true
 	verbose = true
+	status = true
+	template = ~/.config/git/gitmessage.txt
 [alias]
 	unstage = restore --stage
 	discard = restore
@@ -24,3 +26,18 @@
 [diff "exif"]
 	# sudo apt install exif
 	textconv = exif
+[merge]
+	conflictstyle = diff3
+	branchdesc = true
+[am]
+	threeWay = true
+[rerere]
+	enabled = true
+[status]
+	showUntrackedFiles = all
+	branch = true
+	short = true
+[stash]
+	showPatch = true
+[push]
+	default = upstream
