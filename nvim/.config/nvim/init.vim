@@ -112,6 +112,15 @@ Plug 'tpope/vim-surround'
 " https://github.com/tpope/vim-repeat
 Plug 'tpope/vim-repeat'
 
+" Git in vim
+" https://github.com/tpope/vim-fugitive
+Plug 'tpope/vim-fugitive'
+
+" Fugitive extension
+" Branch managment
+" https://github.com/sodapopcan/vim-twiggy
+Plug 'sodapopcan/vim-twiggy'
+
 call plug#end()
 
 " vim-airline
