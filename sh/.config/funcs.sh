@@ -35,3 +35,38 @@ mkpaths() {
 		fi
 	done
 }
+
+usehook() {
+    file=$1
+    [ -z "$(git rev-parse --show-toplevel)" ] && {
+	return 1
+    }
+
+    [ -z "$file" ] && {
+	echo "Usage: <hook type>/<hook name>"
+	tree ~/.config/git/hooks/
+	return 1
+    }
+
+    [ -f "$HOME/.config/git/hooks/$1" ] || {
+	echo "no such hook"
+	echo "Usage: <hook type>/<hook name>"
+	tree ~/.config/git/hooks/
+	return 1
+    }
+
+    hook="$(git rev-parse --show-toplevel)"/.git/hooks/"${file%/*}"
+    [ -f "$hook" ] && {
+	echo "File exists! Replace? (y/n)"
+	read -r
+	[ "$(echo "$REPLY" | tr 'Y' 'y')" = 'y' ] && rm "$hook" || {
+	    echo "Aborting"
+	    return 1
+	}
+    }
+
+    echo "Installing $hook hook"
+    ln -s ~/.config/git/hooks/"$1" "$hook"
+    # In case the file isn't executable already
+    chmod +x "$hook"
+}
