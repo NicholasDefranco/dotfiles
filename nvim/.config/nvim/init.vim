@@ -111,6 +111,10 @@ Plug 'tpope/vim-surround'
 " https://github.com/tpope/vim-repeat
 Plug 'tpope/vim-repeat'
 
+" Better abbreviations, substitution, and coercion
+" https://github.com/tpope/vim-abolish
+Plug 'tpope/vim-abolish'
+
 call plug#end()
 
 " vim-airline
@@ -135,6 +139,16 @@ let g:instant_markdown_autostart = 0
 
 " Autoscrolling confuses me, as the screen will appear to random places
 let g:instant_markdown_autoscroll = 0
+
+" vim-abolish
+" Note, this must be executed AFTER the vimrc (or init.vim) has been sourced
+fun! Abbrevs()
+    silent! Abolish {despa,sepe}rat{e,es,ed,ing,ely,ion,ions,or} {despe,sepa}rat{}
+    silent! Abolish {reutr,retru}n{,ing,ed} {retur,retur}n{}
+    silent! Abolish gray grey
+    silent! Abolish acommodati{ng,ons} accommodati{}
+endfun
+autocmd VimEnter * call Abbrevs()
 
 " Helper to assist inserting breaks in markdown
 " The a option to format options has strange behaviour with breaks in markdown
@@ -247,9 +261,6 @@ set omnifunc=syntaxcomplete#Complete
 
 " Create the tags file
 command! MakeTags !ctags -R .
-
-" Flip case of a word
-inoremap <c-u> <esc>bviwUea
 
 " ^ and g_ are inconvenient to type
 nnoremap H ^
