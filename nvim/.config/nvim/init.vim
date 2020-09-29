@@ -30,10 +30,6 @@ autocmd FileType json,yaml,markdown,javascript,css,html setlocal shiftwidth=2 so
 " shell scripts should be four spaces
 autocmd FileType vim,sh,zsh,bash,fish setlocal shiftwidth=4 softtabstop=4
 
-
-" shell scripts should be four spaces
-autocmd FileType vim,sh,zsh,bash,fish setlocal shiftwidth=4 softtabstop=4
-
 " Properly strip unneeded whitespace
 fun! StripSpace()
     if &ft == ''
@@ -184,7 +180,13 @@ syntax on
 set shortmess+=I
 
 " fancy auto format options that are extremely helpful
-set formatoptions+=2tqancrojpw
+set formatoptions+=2tqncrojpw
+fun! Format()
+    if !(&ft =~ 'sh' || &ft =~ 'python')
+	setlocal formatoptions+=a
+    endif
+endfun
+autocmd BufEnter * call Format()
 
 " Show line numbers.
 set number
