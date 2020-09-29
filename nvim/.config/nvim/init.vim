@@ -25,7 +25,7 @@ autocmd BufReadPost * call JumpToLastPlace()
 set path+=**
 
 " files for any web dev should be two spaces
-autocmd FileType json,yaml,markdown,javascript,css,html setlocal shiftwidth=2 softtabstop=2 expandtab
+autocmd FileType php,json,yaml,markdown,javascript,css,html setlocal shiftwidth=2 softtabstop=2 expandtab
 
 " shell scripts should be four spaces
 autocmd FileType vim,sh,zsh,bash,fish setlocal shiftwidth=4 softtabstop=4
@@ -111,6 +111,10 @@ Plug 'tpope/vim-repeat'
 " https://github.com/tpope/vim-abolish
 Plug 'tpope/vim-abolish'
 
+" runs linters
+" https://github.com/neomake/neomake
+Plug 'neomake/neomake'
+
 call plug#end()
 
 " vim-airline
@@ -126,9 +130,9 @@ let g:airline#extensions#tabline#enabled = 1
 " You save the file being edited
 let g:instant_markdown_slow = 1
 
-" Turn off autostart. Autostart automatically opens your browser and switchs
+" Turn off autostart. Autostart automatically opens your browser and switches
 " focus to it which does not make much sense and is annoying. Thus, it makes
-" more sense to do t manually
+" more sense to do it manually
 " Use :InstantMarkdownPreview to start the server and
 " :InstantMarkdownStop to stop it
 let g:instant_markdown_autostart = 0
@@ -145,6 +149,46 @@ fun! Abbrevs()
     silent! Abolish acommodati{ng,ons} accommodati{}
 endfun
 autocmd VimEnter * call Abbrevs()
+
+" neomake
+" Notes for this plugin:
+" Yamllint - sudo apt install yamllint
+" eslint - sudo apt install eslint
+" vint - pip3 install vim-vint
+" sqllint - sudo gem install sqllint
+" shellcheck - sudo apt install shellcheck
+" markdown linter - sudo npm install -g markdownlint-cli
+" Prose lint - pip3 install proselint
+" write good - sudo npm install -g write-good
+" json linter - sudo npm install jsonlint -g
+" cpp check - sudo apt install cppcheck
+" css linter - sudo npm install -g csslint
+" PHP_CodeSniffer - composer global require "squizlabs/php_codesniffer=*"
+" python linter - sudo apt install pylinud
+" html linter - install @linthtml/linthtml --save-dev
+"	      - npx linthtml --init
+
+" Full config: when writing or reading a buffer, and on changes in insert and
+" normal mode (after 500ms; no delay when writing).
+call neomake#configure#automake('nrwi', 500)
+
+augroup my_neomake_signs
+    au!
+    autocmd ColorScheme *
+		\ hi NeomakeErrorSign ctermfg=red |
+		\ hi NeomakeWarningSign ctermfg=yellow |
+		\ hi NeomakeInfoSign ctermfg=blue |
+		\ hi NeomakeMessageSign ctermfg=blue
+augroup END
+
+augroup my_neomake_highlights
+    au!
+    autocmd ColorScheme *
+		\ highlight NeomakeError ctermfg=red |
+		\ highlight NeomakeWarning ctermfg=yellow |
+		\ highlight NeomakeInfo ctermfg=blue |
+		\ highlight NeomakeMessage ctermfg=blue
+augroup END
 
 " Helper to assist inserting breaks in markdown
 " The a option to format options has strange behaviour with breaks in markdown
