@@ -70,3 +70,36 @@ usehook() {
     # In case the file isn't executable already
     chmod +x "$hook"
 }
+
+prunehooks() {
+    repo="$(git rev-parse --show-toplevel)"
+    [ -z "$repo" ] && {
+	return 1
+    }
+
+    echo "Ok, removing *.sample hooks"
+    rm $repo/.git/hooks/*.sample 2> /dev/null
+}
+
+disablehook() {
+    repo="$(git rev-parse --show-toplevel)"
+    [ -z "$repo" ] && {
+	return 1
+    }
+
+    [ -z "$1" ] && {
+	echo "Usage: <hook type>"
+	echo "Hooks in use:"
+	ls -H "$repo/.git/hooks/"
+	return 1
+    }
+
+    [ "$(ls $repo/.git/hooks/$1)" ] || {
+	echo "No such hook"
+	ls -H "$repo/.git/hooks/"
+	return 1
+    }
+
+    echo "Disabling $1 hook"
+    rm "$repo/.git/hooks/$1"
+}
