@@ -63,7 +63,7 @@ fun! SpellCheck()
 		setlocal spell spelllang=en_ca
 	endif
 endfun
-autocmd VimEnter,BufReadPost * call SpellCheck()
+autocmd VimEnter,BufEnter * call SpellCheck()
 
 " vim-plug as the plug-in manager https://github.com/junegunn/vim-plug
 
