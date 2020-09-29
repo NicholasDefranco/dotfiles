@@ -118,3 +118,65 @@ disablehook() {
     echo "Disabling $1 hook"
     rm "$repo/.git/hooks/$1"
 }
+
+# github actions
+useaction() {
+    repo="$(git rev-parse --show-toplevel)"
+    [ -z "$repo" ] && {
+	return 1
+    }
+
+    [ -z "$1" ] && {
+	echo "Usage: <action>"
+	echo "Available actions:"
+	ls ~/.config/git/actions/
+	return 1
+    }
+
+    [ -f "$HOME/.config/git/actions/$1" ] || {
+	echo "No such action"
+	ls ~/.config/git/actions/
+	return 1
+    }
+
+    [ -z "$(git remote -v | grep 'github')" ] && {
+	echo "No github repo detected, are you sure you want to add an action?"
+	read -r
+	[ "$(echo $REPLY | tr 'Y' 'y')" = 'y' ] || {
+	    echo "Aborting"
+	    return 1
+	}
+    }
+
+    echo "installing $1 action"
+    mkdir -p "$repo/.github/workflows/"
+    cp "$HOME/.config/git/actions/$1" "$repo/.github/workflows/"
+}
+
+rmaction() {
+    repo="$(git rev-parse --show-toplevel)"
+    [ -z "$repo" ] && {
+	return 1
+    }
+
+    [ -z "$repo/.github/workflows/*" ] || {
+	echo "No actions in use, no need to delete"
+	return 1
+    }
+
+    [ -z "$1" ] && {
+	echo "Usage: <action>"
+	echo "Actions in use:"
+	ls "$repo/.github/workflows/"
+	return 1
+    }
+
+    [ -f "$repo/.github/workflows/$1" ] || {
+	echo "No such action"
+	ls "$repo/.github/workflows/"
+	return 1
+    }
+
+    echo "Removing the $1 action"
+    rm "$repo/.github/workflows/$1"
+}
