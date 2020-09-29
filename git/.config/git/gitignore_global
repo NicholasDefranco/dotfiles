@@ -2,6 +2,7 @@
 .*.swp
 .vimrc
 *.vim
+*.log
 .DS_Store
 tags
 cppcheck.xml
