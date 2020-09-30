@@ -1,3 +1,14 @@
+# If not running interactively, don't do anything
+case $- in
+    *i*) ;;
+      *) return;;
+esac
+
+# Load common settings between shells
+if [ -f ~/.config/common.sh ]; then
+    . ~/.config/common.sh
+fi
+
 # Code from the offical git-scm website
 # https://git-scm.com/book/en/v2/Appendix-A%3A-Git-in-Other-Environments-Git-in-Zsh
 autoload -Uz vcs_info
