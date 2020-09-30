@@ -37,7 +37,10 @@
 	showUntrackedFiles = all
 	branch = true
 	short = true
+	submodulesummary = true
 [stash]
 	showPatch = true
 [push]
 	default = upstream
+[diff]
+	submodule = log
