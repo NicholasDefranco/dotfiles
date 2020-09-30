@@ -9,9 +9,8 @@ let mapleader = " "
 " have Vim jump to the last position when reopening a file
 " Except for gitcommit files where this feature is an annoyance
 fun! JumpToLastPlace()
-    " If filename is .git/COMMIT_EDITMSG
     " https://stackoverflow.com/questions/4525261/getting-relative-paths-in-vim#24463362
-    if expand("%") =~ '.git/COMMIT_EDITMSG'
+    if expand("%") =~ '.git/COMMIT_EDITMSG' || expand('%') =~ '.git/MERGE_MSG' || expand('%') =~ '.git/rebase-merge/git-rebase-todo'
 	return
     endif
     if line("'\"") > 1 && line("'\"") <= line("$")
@@ -55,9 +54,10 @@ autocmd BufEnter * call StripSpace()
 " This function blacklists files that I don't want spell checking on
 fun! SpellCheck()
 	let l:ext = expand("%:e")
+	let l:fname = expand('%:t')
 	" I programmed in these languages at one point ... don't judge!
 	" Spell check in them is very annoying
-	if l:ext =~ '.*rpgle$' || l:ext =~ 'clle' || l:ext =~ '.*pf$' || l:ext =~ 'lf' || &ft == 'help' || &ft == 'man' || &ft == 'gitrebase'
+	if l:ext =~ '.*rpgle$' || l:ext =~ 'clle' || l:ext =~ '.*pf$' || l:ext =~ 'lf' || &ft == 'help' || &ft == 'man' || &ft == 'gitrebase' || l:fname == '.gitconfig' || l:fname == 'git-rebase-todo' || l:fname == '.gitattributes' || &ft == '' || l:fname == 'addp-hunk-edit.diff'
 		return
 	else
 		setlocal spell spelllang=en_ca
@@ -118,6 +118,15 @@ Plug 'neomake/neomake'
 " Remember folds in a file
 " https://github.com/vim-scripts/restore_view.vim
 Plug 'vim-scripts/restore_view.vim'
+
+" Git in vim
+" https://github.com/tpope/vim-fugitive
+Plug 'tpope/vim-fugitive'
+
+" Fugitive extension
+" Branch managment
+" https://github.com/sodapopcan/vim-twiggy
+Plug 'sodapopcan/vim-twiggy'
 
 call plug#end()
 
