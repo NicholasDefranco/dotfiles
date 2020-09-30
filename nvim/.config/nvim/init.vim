@@ -115,6 +115,10 @@ Plug 'tpope/vim-abolish'
 " https://github.com/neomake/neomake
 Plug 'neomake/neomake'
 
+" Remember folds in a file
+" https://github.com/vim-scripts/restore_view.vim
+Plug 'vim-scripts/restore_view.vim'
+
 call plug#end()
 
 " vim-airline
@@ -205,6 +209,24 @@ augroup END
 
 " Other Markdown stuff
 exec "source ~/.config/nvim/markdown-vim.vim"
+
+
+" restore_view
+fun! FoldMethod()
+    if expand("%") =~ '.git/COMMIT_EDITMSG'
+	setlocal foldmethod=manual
+    else
+	setlocal foldmethod=syntax
+    endif
+endfun
+autocmd VimEnter,BufReadPre * call FoldMethod()
+
+" Use this to not save a view
+" autocmd VimEnter * let g:loaded_restore_view
+
+" Suggested setting by the plug in
+set viewoptions=cursor,folds,slash,unix
+
 
 " If you open this file in Vim, it'll be syntax highlighted for you.
 
