@@ -194,15 +194,6 @@ augroup my_neomake_signs
 		\ hi NeomakeMessageSign ctermfg=blue
 augroup END
 
-augroup my_neomake_highlights
-    au!
-    autocmd ColorScheme *
-		\ highlight NeomakeError ctermfg=red |
-		\ highlight NeomakeWarning ctermfg=yellow |
-		\ highlight NeomakeInfo ctermfg=blue |
-		\ highlight NeomakeMessage ctermfg=blue
-augroup END
-
 " Helper to assist inserting breaks in markdown
 " The a option to format options has strange behaviour with breaks in markdown
 " This code should help rectify the issue
@@ -236,6 +227,9 @@ autocmd VimEnter,BufReadPre * call FoldMethod()
 " Suggested setting by the plug in
 set viewoptions=cursor,folds,slash,unix
 
+" Decorations
+autocmd ColorScheme * highlight VertSplit cterm=NONE ctermfg=red ctermbg=NONE
+autocmd ColorScheme * highlight signcolumn cterm=NONE ctermfg=grey ctermbg=NONE
 
 " If you open this file in Vim, it'll be syntax highlighted for you.
 
