@@ -123,6 +123,10 @@ Plug 'vim-scripts/restore_view.vim'
 " https://github.com/tpope/vim-fugitive
 Plug 'tpope/vim-fugitive'
 
+" Software caps lock
+" https://github.com/tpope/vim-capslock
+Plug 'tpope/vim-capslock'
+
 " Fugitive extension
 " Branch managment
 " https://github.com/sodapopcan/vim-twiggy
