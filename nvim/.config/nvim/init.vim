@@ -231,6 +231,24 @@ set viewoptions=cursor,folds,slash,unix
 autocmd ColorScheme * highlight VertSplit cterm=NONE ctermfg=red ctermbg=NONE
 autocmd ColorScheme * highlight signcolumn cterm=NONE ctermfg=grey ctermbg=NONE
 
+let s:hidden_all = 0
+function! ToggleHiddenAll()
+    if s:hidden_all  == 0
+        let s:hidden_all = 1
+        set noruler
+        set laststatus=0
+        set noshowcmd
+    else
+        let s:hidden_all = 0
+        set ruler
+        set laststatus=2
+        set showcmd
+    endif
+endfunction
+
+nnoremap <leader>b :call ToggleHiddenAll()<CR>
+autocmd VimEnter * call ToggleHiddenAll()
+
 " If you open this file in Vim, it'll be syntax highlighted for you.
 
 " Vim is based on Vi. Setting `nocompatible` switches from the default
@@ -251,7 +269,7 @@ set shortmess+=I
 " fancy auto format options that are extremely helpful
 set formatoptions+=2tqncrojpw
 fun! Format()
-    if !(&ft =~ 'sh' || &ft =~ 'python')
+    if !(&ft =~ 'vim' || &ft =~ 'sh' || &ft =~ 'python')
 	setlocal formatoptions+=a
     endif
 endfun
@@ -325,6 +343,16 @@ filetype indent on
 " Indent a whole file
 nnoremap <leader>i gg=G<c-o>
 
+" Toggle spelling
+nnoremap <leader>p :setlocal spell!<cr>
+
+" Resize split
+" https://stackoverflow.com/questions/4368690/how-to-increase-the-vertical-split-window-size-in-vim
+nnoremap <C-left> <c-w><
+nnoremap <c-right> <c-w>>
+nnoremap <c-up> <c-w>+
+nnoremap <c-down> <c-w>-
+
 " Enable CSS completion
 " https://medium.com/vim-drops/css-autocompletion-on-vim-no-plugins-needed-e8df9ce079c7
 filetype plugin on
@@ -338,6 +366,16 @@ nnoremap H ^
 nnoremap L g_
 vnoremap H ^
 vnoremap L g_
+
+" gt and gT are also inconvenient
+nnoremap J gT
+nnoremap K gt
+
+" To avoid shadowing of J and K
+nnoremap M K
+nnoremap <c-n> J
+
+nnoremap <c-s> i<cr><esc>k$
 
 " _ and + to move lines up and down
 nnoremap _ "+ddp
