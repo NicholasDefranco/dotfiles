@@ -132,6 +132,10 @@ Plug 'tpope/vim-capslock'
 " https://github.com/sodapopcan/vim-twiggy
 Plug 'sodapopcan/vim-twiggy'
 
+" liquid syntax
+" https://github.com/tpope/vim-liquid
+Plug 'tpope/vim-liquid'
+
 call plug#end()
 
 " vim-airline
