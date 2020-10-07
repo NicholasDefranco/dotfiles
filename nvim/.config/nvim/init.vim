@@ -101,10 +101,6 @@ endif
 " List of plugins
 call plug#begin(system('echo -n "${XDG_CONFIG_HOME:-$HOME/.config}/nvim/plugged"'))
 
-" https://github.com/danro/rename.vim
-" Adds the :Rename comand allowing me to rename files
-Plug 'danro/rename.vim'
-
 " https://github.com/suan/vim-instant-markdown
 " Opens a local web server on port 8090 which parses markdown files
 " Viewable on the browser
@@ -156,6 +152,10 @@ Plug 'tpope/vim-liquid'
 " Preview colours in css
 " https://github.com/ap/vim-css-color
 Plug 'ap/vim-css-color'
+
+" Shell commands enhancement
+" https://github.com/tpope/vim-eunuch
+Plug 'tpope/vim-eunuch'
 
 call plug#end()
 
