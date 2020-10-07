@@ -28,6 +28,27 @@ autocmd FileType php,json,yaml,markdown,javascript,css,html setlocal shiftwidth=
 
 " shell scripts should be four spaces
 autocmd FileType vim,sh,zsh,bash,fish setlocal shiftwidth=4 softtabstop=4
+augroup decor
+    " Vertical Splits
+    autocmd ColorScheme * highlight VertSplit cterm=NONE ctermfg=red ctermbg=NONE
+    " Sign Column - where neomake symbols show
+    autocmd ColorScheme * highlight signcolumn cterm=NONE ctermfg=grey ctermbg=NONE
+    " Fold colours
+    autocmd ColorScheme * highlight Folded ctermfg=Black ctermbg=blue
+    autocmd ColorScheme * highlight FoldColumn cterm=NONE ctermbg=NONE
+    " UI modifications
+    autocmd ColorScheme * highlight statusline cterm=NONE ctermfg=red ctermbg=NONE
+    autocmd ColorScheme * highlight statuslineterm cterm=NONE ctermfg=red ctermbg=NONE
+    autocmd ColorScheme * highlight statuslinetermnc cterm=NONE ctermfg=red ctermbg=NONE
+    autocmd ColorScheme * highlight statuslinenc cterm=NONE ctermfg=darkgrey ctermbg=NONE
+    autocmd ColorScheme * highlight tabline cterm=NONE ctermfg=darkgrey ctermbg=NONE
+    autocmd ColorScheme * highlight tablinefill cterm=NONE ctermfg=red ctermbg=NONE
+    " Spelling
+    autocmd ColorScheme * highlight SpellBad term=bold cterm=underline ctermbg=NONE ctermfg=NONE
+    autocmd ColorScheme * highlight SpellCap term=bold cterm=underline ctermbg=NONE ctermfg=NONE
+    autocmd ColorScheme * highlight SpellRare term=bold cterm=underline ctermbg=NONE ctermfg=NONE
+    autocmd ColorScheme * highlight SpellLocal term=bold cterm=underline ctermbg=NONE ctermfg=NONE
+augroup END
 
 " Properly strip unneeded whitespace
 fun! StripSpace()
@@ -79,10 +100,6 @@ endif
 
 " List of plugins
 call plug#begin(system('echo -n "${XDG_CONFIG_HOME:-$HOME/.config}/nvim/plugged"'))
-
-" https://github.com/vim-airline/vim-airline
-" pretty status bar
-Plug 'vim-airline/vim-airline'
 
 " https://github.com/danro/rename.vim
 " Adds the :Rename comand allowing me to rename files
@@ -136,12 +153,13 @@ Plug 'sodapopcan/vim-twiggy'
 " https://github.com/tpope/vim-liquid
 Plug 'tpope/vim-liquid'
 
+" Preview colours in css
+" https://github.com/ap/vim-css-color
+Plug 'ap/vim-css-color'
+
 call plug#end()
 
-" vim-airline
 
-" let the fancy-ness continue in the status bar
-let g:airline#extensions#tabline#enabled = 1
 
 " vim-instant-markdown
 
@@ -194,12 +212,12 @@ autocmd VimEnter * call Abbrevs()
 call neomake#configure#automake('nrwi', 500)
 
 augroup my_neomake_signs
-    au!
-    autocmd ColorScheme *
-		\ hi NeomakeErrorSign ctermfg=red |
-		\ hi NeomakeWarningSign ctermfg=yellow |
-		\ hi NeomakeInfoSign ctermfg=blue |
-		\ hi NeomakeMessageSign ctermfg=blue
+	au!
+	autocmd ColorScheme *
+				\ hi NeomakeErrorSign ctermfg=red |
+				\ hi NeomakeWarningSign ctermfg=yellow |
+				\ hi NeomakeInfoSign ctermfg=blue |
+				\ hi NeomakeMessageSign ctermfg=blue
 augroup END
 
 " Helper to assist inserting breaks in markdown
@@ -213,6 +231,13 @@ augroup mdformat
     autocmd BufWritePre *.md silent! undojoin | silent! :keepjumps %s/<br> \?\(.\+\)/\1/g
     autocmd BufEnter,BufReadPost,BufWritePost,VimLeavePre *.md call winrestview(l)
     autocmd Filetype markdown iabbrev <buffer> $ <br>
+augroup my_neomake_highlights
+        au!
+        autocmd ColorScheme *
+          \ highlight NeomakeError cterm=underline ctermfg=red |
+          \ highlight NeomakeWarning cterm=underline ctermfg=yellow |
+	  \ highlight NeoMakeInfo cterm=underline ctermfg=blue |
+	  \ highlight NeoMakeMessage cterm=underline ctermfg=blue
 augroup END
 
 " Other Markdown stuff
@@ -235,27 +260,7 @@ autocmd VimEnter,BufReadPre * call FoldMethod()
 " Suggested setting by the plug in
 set viewoptions=cursor,folds,slash,unix
 
-" Decorations
-autocmd ColorScheme * highlight VertSplit cterm=NONE ctermfg=red ctermbg=NONE
-autocmd ColorScheme * highlight signcolumn cterm=NONE ctermfg=grey ctermbg=NONE
 
-let s:hidden_all = 0
-function! ToggleHiddenAll()
-    if s:hidden_all  == 0
-        let s:hidden_all = 1
-        set noruler
-        set laststatus=0
-        set noshowcmd
-    else
-        let s:hidden_all = 0
-        set ruler
-        set laststatus=2
-        set showcmd
-    endif
-endfunction
-
-nnoremap <leader>b :call ToggleHiddenAll()<CR>
-autocmd VimEnter * call ToggleHiddenAll()
 
 " If you open this file in Vim, it'll be syntax highlighted for you.
 
@@ -297,8 +302,8 @@ set numberwidth=3
 " down.
 set relativenumber
 
-" Always show the status line at the bottom, even if you only have one window open.
-set laststatus=2
+" No status line
+set laststatus=0
 
 " The backspace key has slightly unintuitive behavior by default. For example,
 " by default, you can't backspace before the insertion point set with 'i'.
@@ -334,6 +339,12 @@ set splitbelow splitright
 " Unbind some useless/annoying default key bindings.
 nmap Q <Nop> " 'Q' in normal mode enters Ex mode. You almost never want this.
 
+filetype on
+filetype indent on
+" Enable CSS completion
+" https://medium.com/vim-drops/css-autocompletion-on-vim-no-plugins-needed-e8df9ce079c7
+set omnifunc=syntaxcomplete#Complete
+
 " Disable audible bell because it's annoying.
 set noerrorbells visualbell t_vb=
 
@@ -344,9 +355,6 @@ nnoremap <silent> <c-k> :wincmd k<CR>
 nnoremap <silent> <c-j> :wincmd j<CR>
 nnoremap <silent> <c-h> :wincmd h<CR>
 nnoremap <silent> <c-l> :wincmd l<CR>
-
-filetype on
-filetype indent on
 
 " Indent a whole file
 nnoremap <leader>i gg=G<c-o>
@@ -360,11 +368,6 @@ nnoremap <C-left> <c-w><
 nnoremap <c-right> <c-w>>
 nnoremap <c-up> <c-w>+
 nnoremap <c-down> <c-w>-
-
-" Enable CSS completion
-" https://medium.com/vim-drops/css-autocompletion-on-vim-no-plugins-needed-e8df9ce079c7
-filetype plugin on
-set omnifunc=syntaxcomplete#Complete
 
 " Create the tags file
 command! MakeTags !ctags -R .
