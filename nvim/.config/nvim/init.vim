@@ -128,9 +128,6 @@ Plug 'tpope/vim-abolish'
 " https://github.com/neomake/neomake
 Plug 'neomake/neomake'
 
-" Remember folds in a file
-" https://github.com/vim-scripts/restore_view.vim
-Plug 'vim-scripts/restore_view.vim'
 
 " Git in vim
 " https://github.com/tpope/vim-fugitive
@@ -244,21 +241,7 @@ augroup END
 exec "source ~/.config/nvim/markdown-vim.vim"
 
 
-" restore_view
-fun! FoldMethod()
-    if expand("%") =~ '.git/COMMIT_EDITMSG'
-	setlocal foldmethod=manual
-    else
-	setlocal foldmethod=syntax
-    endif
-endfun
-autocmd VimEnter,BufReadPre * call FoldMethod()
 
-" Use this to not save a view
-" autocmd VimEnter * let g:loaded_restore_view
-
-" Suggested setting by the plug in
-set viewoptions=cursor,folds,slash,unix
 
 
 
@@ -282,11 +265,13 @@ set shortmess+=I
 " fancy auto format options that are extremely helpful
 set formatoptions+=2tqncrojpw
 fun! Format()
-    if !(&ft =~ 'vim' || &ft =~ 'sh' || &ft =~ 'python')
+    if !(&filetype =~# 'vim' || &filetype =~# 'sh' || &filetype =~# 'python')
 	setlocal formatoptions+=a
     endif
 endfun
-autocmd BufEnter * call Format()
+augroup formatting
+    autocmd BufEnter * call Format()
+augroup END
 
 " Show line numbers.
 set number
