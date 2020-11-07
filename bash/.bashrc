@@ -63,14 +63,11 @@ if [ -n "$force_color_prompt" ]; then
     fi
 fi
 
-# Needed to show git info on the prompt string
-. ~/.config/bash/git-prompt.sh
-
 # Show only 2 parts of a path in prompt string
 PROMPT_DIRTRIM=2
 
 if [ "$color_prompt" = yes ]; then
-    PS1="\[$(tput bold)\]\[$(tput setaf 1)\][\[$(tput setaf 3)\]\u\[$(tput setaf 2)\]@\[$(tput setaf 4)\]\h \[$(tput setaf 5)\]\w \[$(tput setaf 6)\]$(__git_ps1 "(%s)")\[$(tput setaf 1)\]]\[$(tput setaf 7)\] \[$(tput setaf 2)\]\\$ \[$(tput sgr0)\]"
+    PS1="\[$(tput bold)\]\[$(tput setaf 1)\][\[$(tput setaf 3)\]\u\[$(tput setaf 2)\]@\[$(tput setaf 4)\]\h \[$(tput setaf 5)\]\w \[$(tput setaf 6)\]\[$(tput setaf 1)\]]\[$(tput setaf 7)\] \[$(tput setaf 2)\]\\$ \[$(tput sgr0)\]"
 else
     PS1='${debian_chroot:+($debian_chroot)}\u@\h:\w\$ '
 fi
@@ -95,9 +92,3 @@ if ! shopt -oq posix; then
     . /etc/bash_completion
   fi
 fi
-
-# bind Ctrl-o to custom lfcd function
-bind '"\C-o":"lfcd\C-m"'
-
-# added by travis gem
-[ ! -s /home/nick/.travis/travis.sh ] || source /home/nick/.travis/travis.sh

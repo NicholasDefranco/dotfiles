@@ -93,8 +93,3 @@ if [ -f ~/.config/funcs.sh ]; then
     source ~/.config/funcs.sh
 fi
 
-# bind Ctrl+o to lfcd function
-bindkey -s '^o' 'lfcd\n'
-
-# added by travis gem
-[ ! -s /home/nick/.travis/travis.sh ] || source /home/nick/.travis/travis.sh
