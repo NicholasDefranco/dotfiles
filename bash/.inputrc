@@ -1,5 +1,15 @@
 set editing-mode vi
+
+$if mode=vi
+
 # https://stackoverflow.com/questions/7888387/the-way-to-distinguish-command-mode-and-insert-mode-in-bashs-vi-command-line-ed#32614367
 set show-mode-in-prompt on
 set vi-ins-mode-string \1\e[6 q\2
 set vi-cmd-mode-string \1\e[2 q\2
+
+# https://unix.stackexchange.com/questions/104094/is-there-any-way-to-enable-ctrll-to-clear-screen-when-set-o-vi-is-set
+set keymap vi-insert
+# these are for vi-insert mode
+Control-l: clear-screen
+
+$endif
