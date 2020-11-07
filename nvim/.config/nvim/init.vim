@@ -1,33 +1,10 @@
 " Comments in Vimscript start with a `"`.
 
+" {{{ Decorations
+
 " Colourful colorscheme
 colorscheme slate
 
-nnoremap <space> <nop>
-let mapleader = " "
-
-" have Vim jump to the last position when reopening a file
-" Except for gitcommit files where this feature is an annoyance
-fun! JumpToLastPlace()
-    " https://stackoverflow.com/questions/4525261/getting-relative-paths-in-vim#24463362
-    if expand("%") =~ '.git/COMMIT_EDITMSG' || expand('%') =~ '.git/MERGE_MSG' || expand('%') =~ '.git/rebase-merge/git-rebase-todo'
-	return
-    endif
-    if line("'\"") > 1 && line("'\"") <= line("$")
-	exe "normal! g'\""
-    endif
-endfun
-autocmd BufReadPost * call JumpToLastPlace()
-
-" Search down into subfolders
-" Provides tab-completion for all file-related tasks
-set path+=**
-
-" files for any web dev should be two spaces
-autocmd FileType php,json,yaml,markdown,javascript,css,html setlocal shiftwidth=2 softtabstop=2 expandtab
-
-" shell scripts should be four spaces
-autocmd FileType vim,sh,zsh,bash,fish setlocal shiftwidth=4 softtabstop=4
 augroup decor
     " Vertical Splits
     autocmd ColorScheme * highlight VertSplit cterm=NONE ctermfg=red ctermbg=NONE
@@ -50,41 +27,9 @@ augroup decor
     autocmd ColorScheme * highlight SpellLocal term=bold cterm=underline ctermbg=NONE ctermfg=NONE
 augroup END
 
-" Properly strip unneeded whitespace
-fun! StripSpace()
-    if &ft == ''
-	return
-    endif
-    if expand('%') !~ "\.md$"
-	augroup stripgroup
-	    autocmd!
-	    autocmd BufWrite * silent! :undojoin | :let l = winsaveview()
-	    autocmd BufWrite * silent! :undojoin|silent! :%s/\s\+$//
-	    autocmd BufWrite * silent! :undojoin|:call winrestview(l)
-	augroup END
-    else
-	augroup stripgroup
-	    autocmd!
-	    autocmd BufWrite *.md silent! :undojoin|silent! :%s/\s\s\s\+$//|:undojoin|silent! :%s/\(\S\)\s$/\1/
-	augroup END
-    endif
-endfun
-autocmd BufEnter * call StripSpace()
+" }}}
 
-" Using the Built-in spell checker
-" This function blacklists files that I don't want spell checking on
-fun! SpellCheck()
-	let l:ext = expand("%:e")
-	let l:fname = expand('%:t')
-	" I programmed in these languages at one point ... don't judge!
-	" Spell check in them is very annoying
-	if l:ext =~ '.*rpgle$' || l:ext =~ 'clle' || l:ext =~ '.*pf$' || l:ext =~ 'lf' || &ft == 'help' || &ft == 'man' || &ft == 'gitrebase' || l:fname == '.gitconfig' || l:fname == 'git-rebase-todo' || l:fname == '.gitattributes' || &ft == '' || l:fname == 'addp-hunk-edit.diff' || &ft == 'twiggy' || &ft == 'tmux'
-		return
-	else
-		setlocal spell spelllang=en_ca
-	endif
-endfun
-autocmd VimEnter,BufEnter * call SpellCheck()
+" {{{ Plugins
 
 " vim-plug as the plug-in manager https://github.com/junegunn/vim-plug
 
@@ -92,10 +37,12 @@ autocmd VimEnter,BufEnter * call SpellCheck()
 " Taken from Luke Smith's config
 " https://github.com/LukeSmithxyz/voidrice/blob/master/.config/nvim/init.vim
 if ! filereadable(system('echo -n "${XDG_CONFIG_HOME:-$HOME/.config}/nvim/autoload/plug.vim"'))
-    echo "Downloading junegunn/vim-plug to manage plugins..."
+    echo 'Downloading junegunn/vim-plug to manage plugins...'
     silent !mkdir -p ${XDG_CONFIG_HOME:-$HOME/.config}/nvim/autoload/
-    silent !curl "https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim" > ${XDG_CONFIG_HOME:-$HOME/.config}/nvim/autoload/plug.vim
-    autocmd VimEnter * PlugInstall
+    silent !curl 'https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim' > ${XDG_CONFIG_HOME:-$HOME/.config}/nvim/autoload/plug.vim
+    augroup install
+	autocmd VimEnter * PlugInstall
+    augroup END
 endif
 
 " List of plugins
@@ -156,6 +103,7 @@ Plug 'tpope/vim-eunuch'
 
 call plug#end()
 
+" }}}
 
 
 " vim-instant-markdown
@@ -175,6 +123,7 @@ let g:instant_markdown_autostart = 0
 
 " Autoscrolling confuses me, as the screen will appear to random places
 let g:instant_markdown_autoscroll = 0
+" {{{ Plugin Configurations
 
 " vim-abolish
 " Note, this must be executed AFTER the vimrc (or init.vim) has been sourced
@@ -184,7 +133,10 @@ fun! Abbrevs()
     silent! Abolish gray grey
     silent! Abolish acommodati{ng,ons} accommodati{}
 endfun
-autocmd VimEnter * call Abbrevs()
+augroup abbrev
+    autocmd VimEnter * call Abbrevs()
+augroup END
+
 
 " neomake
 " Notes for this plugin:
@@ -205,45 +157,35 @@ autocmd VimEnter * call Abbrevs()
 "	      - npx linthtml --init
 
 " Full config: when writing or reading a buffer, and on changes in insert and
-" normal mode (after 500ms; no delay when writing).
+" normal mode (after 100ms; no delay when writing).
 call neomake#configure#automake('nrwi', 500)
 
 augroup my_neomake_signs
-	au!
-	autocmd ColorScheme *
-				\ hi NeomakeErrorSign ctermfg=red |
-				\ hi NeomakeWarningSign ctermfg=yellow |
-				\ hi NeomakeInfoSign ctermfg=blue |
-				\ hi NeomakeMessageSign ctermfg=blue
+    au!
+    autocmd ColorScheme *
+		\ hi NeomakeErrorSign ctermfg=red |
+		\ hi NeomakeWarningSign ctermfg=yellow |
+		\ hi NeomakeInfoSign ctermfg=blue |
+		\ hi NeomakeMessageSign ctermfg=blue
 augroup END
 
-" Helper to assist inserting breaks in markdown
-" The a option to format options has strange behaviour with breaks in markdown
-" This code should help rectify the issue
-augroup mdformat
-    autocmd!
-    autocmd BufEnter,BufReadPost,BufWritePre,VimLeavePre *.md silent! :undojoin | :let l = winsaveview()
-    autocmd BufEnter,BufWritePost *.md silent! undojoin | silent! :keepjumps %s/  $/ <br>/g
-    autocmd BufWritePre,VimLeavePre *.md silent! undojoin | silent! :keepjumps %s/ <br>$/  /g
-    autocmd BufWritePre *.md silent! undojoin | silent! :keepjumps %s/<br> \?\(.\+\)/\1/g
-    autocmd BufEnter,BufReadPost,BufWritePost,VimLeavePre *.md call winrestview(l)
-    autocmd Filetype markdown iabbrev <buffer> $ <br>
 augroup my_neomake_highlights
-        au!
-        autocmd ColorScheme *
-          \ highlight NeomakeError cterm=underline ctermfg=red |
-          \ highlight NeomakeWarning cterm=underline ctermfg=yellow |
-	  \ highlight NeoMakeInfo cterm=underline ctermfg=blue |
-	  \ highlight NeoMakeMessage cterm=underline ctermfg=blue
+    au!
+    autocmd ColorScheme *
+		\ highlight NeomakeError cterm=underline ctermfg=red |
+		\ highlight NeomakeWarning cterm=underline ctermfg=yellow |
+		\ highlight NeoMakeInfo cterm=underline ctermfg=blue |
+		\ highlight NeoMakeMessage cterm=underline ctermfg=blue
 augroup END
 
-" Other Markdown stuff
-exec "source ~/.config/nvim/markdown-vim.vim"
+" Markdown stuff
+exec 'source ~/.config/nvim/markdown-vim.vim'
 
 
 
+" }}}
 
-
+" {{{ Basic Configs
 
 " If you open this file in Vim, it'll be syntax highlighted for you.
 
@@ -254,7 +196,7 @@ exec "source ~/.config/nvim/markdown-vim.vim"
 " is present. But we're including it here just in case this config file is
 " loaded some other way (e.g. saved as `foo`, and then Vim started with
 " `vim -u foo`).
-set nocompatible
+" set nocompatible
 
 " Turn on syntax highlighting.
 syntax on
@@ -262,6 +204,7 @@ syntax on
 " Disable the default Vim startup message.
 set shortmess+=I
 
+" Formatting
 " fancy auto format options that are extremely helpful
 set formatoptions+=2tqncrojpw
 fun! Format()
@@ -309,9 +252,8 @@ set hidden
 set ignorecase
 set smartcase
 
-set ai " auto indent
+set autoindent " auto indent
 set scrolloff=3 " keep 3 lines when scrolling
-set ruler
 
 " Enable searching as you type, rather than waiting till you press enter.
 set incsearch
@@ -332,6 +274,14 @@ set omnifunc=syntaxcomplete#Complete
 
 " Disable audible bell because it's annoying.
 set noerrorbells visualbell t_vb=
+
+" }}}
+
+" {{{ Bindings
+
+" Space as the leader key
+nnoremap <space> <nop>
+let mapleader = ' '
 
 " Use ctrl-[hjkl] to select the active split!
 " Taken from:
@@ -364,8 +314,8 @@ vnoremap H ^
 vnoremap L g_
 
 " gt and gT are also inconvenient
-nnoremap J gT
-nnoremap K gt
+nnoremap J :tabprevious<cr>
+nnoremap K :tabNext<cr>
 
 " To avoid shadowing of J and K
 nnoremap M K
@@ -385,9 +335,85 @@ inoremap <c-l> <c-t>
 nnoremap <leader>ev :split $MYVIMRC<cr>:nnoremap <buffer> ZZ ZZ :source $MYVIMRC <cr>
 " source vimrc
 nnoremap <leader>sv :source $MYVIMRC<cr>
+
 " easily type name and email
 iabbrev @@ defrann8208@outlook.com
 iabbrev myname Nicholas Defranco
+
+" }}}
+
+" {{{ Project Settings
+
+augroup indent
+    " files for any web dev should be two spaces
+    autocmd FileType php,json,yaml,markdown,javascript,css,html setlocal shiftwidth=2 softtabstop=2 expandtab
+    " shell scripts should be four spaces
+    autocmd FileType vim,sh,zsh,bash,fish setlocal shiftwidth=4 softtabstop=4
+augroup END
+
+" {{{ Jumping
+" have Vim jump to the last position when reopening a file
+" Except for gitcommit files where this feature is an annoyance
+fun! JumpToLastPlace()
+    " https://stackoverflow.com/questions/4525261/getting-relative-paths-in-vim#24463362
+    if expand('%') =~# '.git/COMMIT_EDITMSG' || expand('%') =~# '.git/MERGE_MSG' || expand('%') =~# '.git/rebase-merge/git-rebase-todo'
+	return
+    endif
+    if line("'\"") > 1 && line("'\"") <= line('$')
+	exe "normal! g'\""
+    endif
+endfun
+augroup jump
+    autocmd BufReadPost * call JumpToLastPlace()
+augroup END
+" }}}
+
+" {{{ Strip Whitespace
+" Properly strip unneeded whitespace
+fun! StripSpace()
+    if &filetype ==# ''
+	return
+    endif
+    if expand('%') !~# '\.md$'
+	augroup stripgroup
+	    autocmd!
+	    autocmd BufWrite * silent! :undojoin | :let l = winsaveview()
+	    autocmd BufWrite * silent! :undojoin|silent! :%s/\s\+$//
+	    autocmd BufWrite * silent! :undojoin|:call winrestview(l)
+	augroup END
+    else
+	augroup stripgroup
+	    autocmd!
+	    autocmd BufWrite *.md silent! :undojoin|silent! :%s/\s\s\s\+$//|:undojoin|silent! :%s/\(\S\)\s$/\1/
+	augroup END
+    endif
+endfun
+augroup whitespace
+    autocmd BufEnter * call StripSpace()
+augroup END
+" }}}
+
+" {{{ Spelling
+" Using the Built-in spell checker
+" This function blacklists files that I don't want spell checking on
+fun! SpellCheck()
+    let l:ext = expand('%:e')
+    let l:fname = expand('%:t')
+    " I programmed in these languages at one point ... don't judge!
+    " Spell check in them is very annoying
+    if l:ext =~# '.*rpgle$' || l:ext =~# 'clle' || l:ext =~# '.*pf$' || l:ext =~# 'lf' || &filetype ==# 'help' || &filetype ==# 'man' || &filetype ==# 'gitrebase' || l:fname ==# '.gitconfig' || l:fname ==# 'git-rebase-todo' || l:fname ==# '.gitattributes' || &filetype ==# '' || l:fname ==# 'addp-hunk-edit.diff' || &filetype ==# 'twiggy' || &filetype ==# 'tmux' || &filetype ==# 'taglist' || &filetype ==# 'qf'
+	return
+    else
+	setlocal spell spelllang=en_ca
+	setlocal thesaurus+=/home/nick/.config/nvim/words.txt
+    endif
+endfun
+augroup spelling
+    autocmd VimEnter,BufEnter * call SpellCheck()
+augroup END
+" }}}
+
+" {{{ Project Specific
 
 " Get Project Specific .vimrc in the root directory of the git repository
 fun! GitProject()
@@ -403,8 +429,12 @@ fun! GitProject()
 	nnoremap <buffer> <leader>ep :split
 
 	" https://stackoverflow.com/questions/840900/vim-sourcing-based-on-a-string#841025
-	silent! execute "source " . l:projectvimrc
+	silent! execute 'source ' . l:projectvimrc
     endif
 endfun
-autocmd BufNew * call GitProject()
+augroup project
+    autocmd VimEnter,BufNew * call GitProject()
+augroup END
 call GitProject()
+" }}}
+" }}}
