@@ -48,12 +48,6 @@ endif
 " List of plugins
 call plug#begin(system('echo -n "${XDG_CONFIG_HOME:-$HOME/.config}/nvim/plugged"'))
 
-" https://github.com/suan/vim-instant-markdown
-" Opens a local web server on port 8090 which parses markdown files
-" Viewable on the browser
-" requires: instant-markdown-d
-" sudo npm -g install instant-markdown-d
-Plug 'suan/vim-instant-markdown', {'for': 'markdown'}
 
 " simple commenting plugin
 " https://github.com/tpope/vim-commentary
@@ -70,11 +64,6 @@ Plug 'tpope/vim-repeat'
 " Better abbreviations, substitution, and coercion
 " https://github.com/tpope/vim-abolish
 Plug 'tpope/vim-abolish'
-
-" runs linters
-" https://github.com/neomake/neomake
-Plug 'neomake/neomake'
-
 
 " Git in vim
 " https://github.com/tpope/vim-fugitive
@@ -105,24 +94,6 @@ call plug#end()
 
 " }}}
 
-
-" vim-instant-markdown
-
-" Only update when:
-" No keys have been pressed for a while
-" A while after you leave insert mode
-" You save the file being edited
-let g:instant_markdown_slow = 1
-
-" Turn off autostart. Autostart automatically opens your browser and switches
-" focus to it which does not make much sense and is annoying. Thus, it makes
-" more sense to do it manually
-" Use :InstantMarkdownPreview to start the server and
-" :InstantMarkdownStop to stop it
-let g:instant_markdown_autostart = 0
-
-" Autoscrolling confuses me, as the screen will appear to random places
-let g:instant_markdown_autoscroll = 0
 " {{{ Plugin Configurations
 
 " vim-abolish
@@ -136,52 +107,6 @@ endfun
 augroup abbrev
     autocmd VimEnter * call Abbrevs()
 augroup END
-
-
-" neomake
-" Notes for this plugin:
-" Yamllint - sudo apt install yamllint
-" eslint - sudo apt install eslint
-" vint - pip3 install vim-vint
-" sqllint - sudo gem install sqllint
-" shellcheck - sudo apt install shellcheck
-" markdown linter - sudo npm install -g markdownlint-cli
-" Prose lint - pip3 install proselint
-" write good - sudo npm install -g write-good
-" json linter - sudo npm install jsonlint -g
-" cpp check - sudo apt install cppcheck
-" css linter - sudo npm install -g csslint
-" PHP_CodeSniffer - composer global require "squizlabs/php_codesniffer=*"
-" python linter - sudo apt install pylinud
-" html linter - install @linthtml/linthtml --save-dev
-"	      - npx linthtml --init
-
-" Full config: when writing or reading a buffer, and on changes in insert and
-" normal mode (after 100ms; no delay when writing).
-call neomake#configure#automake('nrwi', 500)
-
-augroup my_neomake_signs
-    au!
-    autocmd ColorScheme *
-		\ hi NeomakeErrorSign ctermfg=red |
-		\ hi NeomakeWarningSign ctermfg=yellow |
-		\ hi NeomakeInfoSign ctermfg=blue |
-		\ hi NeomakeMessageSign ctermfg=blue
-augroup END
-
-augroup my_neomake_highlights
-    au!
-    autocmd ColorScheme *
-		\ highlight NeomakeError cterm=underline ctermfg=red |
-		\ highlight NeomakeWarning cterm=underline ctermfg=yellow |
-		\ highlight NeoMakeInfo cterm=underline ctermfg=blue |
-		\ highlight NeoMakeMessage cterm=underline ctermfg=blue
-augroup END
-
-" Markdown stuff
-exec 'source ~/.config/nvim/markdown-vim.vim'
-
-
 
 " }}}
 
