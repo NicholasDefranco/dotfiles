@@ -49,7 +49,7 @@ endif
 call plug#begin(system('echo -n "${XDG_CONFIG_HOME:-$HOME/.config}/nvim/plugged"'))
 
 
-" simple commenting plugin
+" Simple commenting plugin
 " https://github.com/tpope/vim-commentary
 Plug 'tpope/vim-commentary'
 
@@ -68,6 +68,7 @@ Plug 'tpope/vim-abolish'
 " Git in vim
 " https://github.com/tpope/vim-fugitive
 Plug 'tpope/vim-fugitive'
+Plug 'aymericbeaumet/vim-symlink'
 
 " Software caps lock
 " https://github.com/tpope/vim-capslock
@@ -78,7 +79,7 @@ Plug 'tpope/vim-capslock'
 " https://github.com/sodapopcan/vim-twiggy
 Plug 'sodapopcan/vim-twiggy'
 
-" liquid syntax
+" Liquid syntax
 " https://github.com/tpope/vim-liquid
 Plug 'tpope/vim-liquid'
 
@@ -89,6 +90,14 @@ Plug 'ap/vim-css-color'
 " Shell commands enhancement
 " https://github.com/tpope/vim-eunuch
 Plug 'tpope/vim-eunuch'
+
+" Editor agnostic editor settings file
+" https://github.com/editorconfig/editorconfig-vim
+Plug 'editorconfig/editorconfig-vim'
+
+" List of the structure of the file
+" https://github.com/yegappan/taglist
+Plug 'yegappan/taglist'
 
 call plug#end()
 
@@ -336,30 +345,5 @@ endfun
 augroup spelling
     autocmd VimEnter,BufEnter * call SpellCheck()
 augroup END
-" }}}
-
-" {{{ Project Specific
-
-" Get Project Specific .vimrc in the root directory of the git repository
-fun! GitProject()
-    " https://stackoverflow.com/questions/5794611/how-to-expand-a-symbolic-link-to-the-full-path-of-a-filename-in-vim#5794800
-    let l:projectvimrc = system('cd ' . fnamemodify(resolve(expand("%")), ':p:h') . ' && git rev-parse --show-toplevel | tr -d "\n"') . '/.vimrc'
-
-    " v:shell_error is vim's equivalent of $? in shell scripts
-    " https://stackoverflow.com/questions/9828148/how-to-get-return-status-value-of-an-external-command-in-vim#9828589
-    if v:shell_error == 0
-	" Edit project specific vimrc
-	" I can't figure out how to map this binding to open the file
-	" stored in l:projectvimrc:
-	nnoremap <buffer> <leader>ep :split
-
-	" https://stackoverflow.com/questions/840900/vim-sourcing-based-on-a-string#841025
-	silent! execute 'source ' . l:projectvimrc
-    endif
-endfun
-augroup project
-    autocmd VimEnter,BufNew * call GitProject()
-augroup END
-call GitProject()
 " }}}
 " }}}
