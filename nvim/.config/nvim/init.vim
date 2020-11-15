@@ -60,6 +60,10 @@ Plug 'tpope/vim-commentary'
 " https://github.com/tpope/vim-surround
 Plug 'tpope/vim-surround'
 
+" Easier in-line navigation
+" https://github.com/unblevable/quick-scope
+Plug 'unblevable/quick-scope'
+
 " . command for plugins
 " https://github.com/tpope/vim-repeat
 Plug 'tpope/vim-repeat'
@@ -114,6 +118,10 @@ call plug#end()
 
 " Emmet-vim
 let g:user_emmet_leader_key='<C-Z>'
+
+" quick-scope
+" Trigger a highlight in the appropriate direction when pressing these keys:
+let g:qs_highlight_on_keys = ['f', 'F', 't', 'T']
 
 " vim-abolish
 " Note, this must be executed AFTER the vimrc (or init.vim) has been sourced
