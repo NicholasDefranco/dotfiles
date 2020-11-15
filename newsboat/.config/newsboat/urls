@@ -1,0 +1,16 @@
+# https://getrssfeed.com/
+"query:woah!:(flags # \"a\")"
+"query:Recent Gaming Articles:(tags # \"gaming\" and age < 5)"
+"query:Tech and gaming deals:((tags # \"gaming\") and (title =~ \"\d+% off\" or title =~ \"deals?\" or content =~ \"deals?\" or title =~ \"sale\" or content =~ \"sale\"))"
+"query:Minecraft news:(title =~ \"Minecraft\" or content =~ \"Minecraft\")
+https://lukesmith.xyz/rss.xml linux
+https://videos.lukesmith.xyz/feeds/videos.xml?sort=-publishedAt&filter=local linux
+https://www.linux.com/rss linux news
+https://cyberciti.biz/feed linux hacks
+https://youtube.com/feeds/videos.xml?channel_id=UCfAPTv1LgeEWevG8X_6PUOQ
+http://feeds.ign.com/ign/games-all gaming
+https://nintendolife.com/feeds/latest gaming nintendo
+http://feeds.ign.com/ignfeeds/podcasts/wii/
+https://kotaku.com/rss gaming
+https://news.xbox.com/en-us/feed ! gaming
+http://joeroganexp.joerogan.libsynpro.com/rss

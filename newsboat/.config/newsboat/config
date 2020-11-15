@@ -1,0 +1,102 @@
+# vim: filetype=newsboat
+
+auto-reload yes
+goto-first-unread no
+goto-next-feed no
+show-keymap-hint no
+
+history-limit 0
+
+define-filter "Show me mario stuff" "content =~ \"Mario\""
+
+ignore-mode "display"
+
+error-log "~/.config/newsboat/error.log"
+save-path "~/.config/newsboat/saves"
+download-path "/home/nick/Podcasts/%n"
+download-filename-format "%N-%F - %e"
+download-filename-format "%Y%m%d-%N-%t.%e"
+
+player "mplayer"
+
+unbind-key h
+unbind-key r
+unbind-key R
+unbind-key A
+
+
+bind-key j down
+bind-key k up
+
+bind-key l open
+bind-key h quit
+bind-key j next articlelist
+bind-key k prev articlelist
+bind-key N next-unread-feed
+bind-key P prev-unread-feed
+bind-key o open-in-browser-and-mark-read
+bind-key O open-all-unread-in-browser-and-mark-read
+
+bind-key g home
+bind-key G end
+bind-key ^U pageup
+bind-key ^D pagedown
+
+bind-key S save-all
+
+bind-key z sort
+bind-key Z rev-sort
+
+bind-key r toggle-article-read
+bind-key R mark-feed-read
+bind-key u toggle-show-read-feeds
+
+bind-key U show-urls
+
+bind-key ^R reload-all
+
+bind-key b bookmark
+
+bind-key d delete-article
+bind-key D purge-deleted
+
+datetime-format "%a %b %d"
+
+color listnormal blue default bold
+color listfocus blue black bold
+color listnormal_unread red default bold
+color listfocus_unread red black bold protect
+color info green black bold
+color article white default bold
+
+urlview-title-format "URLs"
+articlelist-title-format "'%T' (%u unread, %t total)"
+articlelist-format  "%4i %f %D  %?T?|%-25T|  ?%t"
+feedlist-title-format "%?F?Feeds&Your feeds? (%u unread, %t total)%?F? matching filter `%F'&?%?T? - tag `%T'&?"
+feedlist-format "%S %n %4i %11u %-35t %?T?type: %10T?"
+itemview-title-format "%T"
+searchresult-title-format "Search results %?F? matching filter `%F'&?"
+selectfilter-title-format "Select Filter"
+selecttag-title-format "Select Tag"
+selecttag-format "%4i %-10T (%f/%u) (%n) "
+dialogs-title-format "Dialogs"
+filebrowser-title-format "%?O?Open File&Save File? - %f"
+dirbrowser-title-format "%?O?Open Directory&Save File? - %f"
+notify-format "%d new articles (%n unread articles, %f unread feeds)"
+podlist-format "%t %T %N %4i [%6dMB/%6tMB] [%5p %%] [%7k kb/s] %-20S -> %F"
+
+macro y set browser "mpv --no-terminal --geometry=600x480 %u 2> /dev/null &" ; open-in-browser ; set browser linkhandler
+
+search-highlight-colors magenta default bold
+
+highlight article "(^Feed:.*|^Title:.*|^Author:.*)" blue default bold
+highlight article "(^Link:.*|^Date:.*)" magenta default default bold
+highlight article "\"?https?://[^\" ]+\"?" green default
+highlight article "mailto:" yellow default
+highlight article "^(Title):.*$" blue default
+highlight article "\\[[0-9][0-9]*\\]" magenta default bold
+highlight article "\\[image \\d+\\]" red default bold
+highlight article "(\\w+)?\\@\\w+\\.\\w+" yellow default bold
+highlight article ".*" white default bold
+highlight article "\\(link\\)" blue default bold
+highlight article "\\(image\\)" red default bold
