@@ -48,6 +48,9 @@ endif
 " List of plugins
 call plug#begin(system('echo -n "${XDG_CONFIG_HOME:-$HOME/.config}/nvim/plugged"'))
 
+" Mainly for markdown tables
+" https://github.com/godlygeek/tabular
+Plug 'godlygeek/tabular'
 
 " Simple commenting plugin
 " https://github.com/tpope/vim-commentary
@@ -91,6 +94,10 @@ Plug 'ap/vim-css-color'
 " https://github.com/tpope/vim-eunuch
 Plug 'tpope/vim-eunuch'
 
+" Better HTML programming
+" https://github.com/mattn/emmet-vim
+Plug 'mattn/emmet-vim'
+
 " Editor agnostic editor settings file
 " https://github.com/editorconfig/editorconfig-vim
 Plug 'editorconfig/editorconfig-vim'
@@ -104,6 +111,9 @@ call plug#end()
 " }}}
 
 " {{{ Plugin Configurations
+
+" Emmet-vim
+let g:user_emmet_leader_key='<C-Z>'
 
 " vim-abolish
 " Note, this must be executed AFTER the vimrc (or init.vim) has been sourced
