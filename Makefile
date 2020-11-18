@@ -1,7 +1,7 @@
 .PHONY: all news zsh
 
 all:
-	apt install git neovim tmux
+	apt install stow git neovim tmux
 	stow --dir="." --target="$(HOME)" sh
 	stow --dir="." --target="$(HOME)" bash
 	stow --dir="." --target="$(HOME)" nvim
