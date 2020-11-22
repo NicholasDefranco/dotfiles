@@ -66,8 +66,13 @@ fi
 # Show only 2 parts of a path in prompt string
 PROMPT_DIRTRIM=2
 
+# https://thucnc.medium.com/how-to-show-current-git-branch-with-colors-in-bash-prompt-380d05a24745
+parse_git_branch() {
+    git branch 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/(\1)/'
+}
+
 if [ "$color_prompt" = yes ]; then
-    PS1="\[$(tput bold)\]\[$(tput setaf 1)\][\[$(tput setaf 3)\]\u\[$(tput setaf 2)\]@\[$(tput setaf 4)\]\h \[$(tput setaf 5)\]\w \[$(tput setaf 6)\]\[$(tput setaf 1)\]]\[$(tput setaf 7)\] \[$(tput setaf 2)\]\\$ \[$(tput sgr0)\]"
+    PS1="\[$(tput bold)\]\[$(tput setaf 1)\][\[$(tput setaf 3)\]\u\[$(tput setaf 2)\]@\[$(tput setaf 4)\]\h \[$(tput setaf 5)\]\w \[$(tput setaf 6)\]\$(parse_git_branch)\[$(tput setaf 1)\]]\[$(tput setaf 7)\] \[$(tput setaf 2)\]\\$ \[$(tput sgr0)\]"
 else
     PS1='${debian_chroot:+($debian_chroot)}\u@\h:\w\$ '
 fi
