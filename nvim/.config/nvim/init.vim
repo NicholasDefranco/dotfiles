@@ -90,9 +90,13 @@ Plug 'ap/vim-css-color'
 " https://github.com/tpope/vim-eunuch
 Plug 'tpope/vim-eunuch'
 
+" Project plugins
 " Editor agnostic editor settings file
 " https://github.com/editorconfig/editorconfig-vim
 Plug 'editorconfig/editorconfig-vim'
+" Automatically determine indent settings on a file
+" https://github.com/ciaranm/detectindent
+Plug 'ciaranm/detectindent'
 
 " List of the structure of the file
 " https://github.com/yegappan/taglist
