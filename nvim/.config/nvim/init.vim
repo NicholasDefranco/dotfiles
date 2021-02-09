@@ -236,6 +236,10 @@ nnoremap <c-down> <c-w>-
 " Create the tags file
 command! MakeTags !ctags -R .
 
+" Navigate through line wraps
+nnoremap j gj
+nnoremap k gk
+
 " ^ and g_ are inconvenient to type
 nnoremap H ^
 nnoremap L g_
