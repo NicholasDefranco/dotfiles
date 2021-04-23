@@ -68,10 +68,6 @@ Plug 'unblevable/quick-scope'
 " https://github.com/tpope/vim-repeat
 Plug 'tpope/vim-repeat'
 
-" Better abbreviations, substitution, and coercion
-" https://github.com/tpope/vim-abolish
-Plug 'tpope/vim-abolish'
-
 " Git in vim
 " https://github.com/tpope/vim-fugitive
 Plug 'tpope/vim-fugitive'
@@ -86,10 +82,6 @@ Plug 'tpope/vim-capslock'
 " https://github.com/sodapopcan/vim-twiggy
 Plug 'sodapopcan/vim-twiggy'
 
-" Liquid syntax
-" https://github.com/tpope/vim-liquid
-Plug 'tpope/vim-liquid'
-
 " Preview colours in css
 " https://github.com/ap/vim-css-color
 Plug 'ap/vim-css-color'
@@ -98,13 +90,13 @@ Plug 'ap/vim-css-color'
 " https://github.com/tpope/vim-eunuch
 Plug 'tpope/vim-eunuch'
 
-" Better HTML programming
-" https://github.com/mattn/emmet-vim
-Plug 'mattn/emmet-vim'
-
+" Project plugins
 " Editor agnostic editor settings file
 " https://github.com/editorconfig/editorconfig-vim
 Plug 'editorconfig/editorconfig-vim'
+" Automatically determine indent settings on a file
+" https://github.com/ciaranm/detectindent
+Plug 'ciaranm/detectindent'
 
 " List of the structure of the file
 " https://github.com/yegappan/taglist
@@ -116,24 +108,9 @@ call plug#end()
 
 " {{{ Plugin Configurations
 
-" Emmet-vim
-let g:user_emmet_leader_key='<C-Z>'
-
 " quick-scope
 " Trigger a highlight in the appropriate direction when pressing these keys:
 let g:qs_highlight_on_keys = ['f', 'F', 't', 'T']
-
-" vim-abolish
-" Note, this must be executed AFTER the vimrc (or init.vim) has been sourced
-fun! Abbrevs()
-    silent! Abolish {despa,sepe}rat{e,es,ed,ing,ely,ion,ions,or} {despe,sepa}rat{}
-    silent! Abolish {reutr,retru}n{,ing,ed} {retur,retur}n{}
-    silent! Abolish gray grey
-    silent! Abolish acommodati{ng,ons} accommodati{}
-endfun
-augroup abbrev
-    autocmd VimEnter * call Abbrevs()
-augroup END
 
 " }}}
 
@@ -258,6 +235,10 @@ nnoremap <c-down> <c-w>-
 
 " Create the tags file
 command! MakeTags !ctags -R .
+
+" Navigate through line wraps
+nnoremap j gj
+nnoremap k gk
 
 " ^ and g_ are inconvenient to type
 nnoremap H ^
