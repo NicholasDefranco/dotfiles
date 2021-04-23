@@ -1,0 +1,20 @@
+{
+    "ul-style": {
+        "style": "dash"
+    },
+    "code-fence-style": {
+        "style": "backtick"
+    },
+    "heading-style": {
+        "style": "atx"
+    },
+    "line-length": {
+        "stern": true
+    },
+    "ol-prefix": {
+        "style": "ordered"
+    },
+    "hr-style": {
+        "style": "---"
+    }
+}
