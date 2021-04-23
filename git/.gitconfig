@@ -44,3 +44,5 @@
 	default = upstream
 [diff]
 	submodule = log
+[grep]
+	lineNumber = true
